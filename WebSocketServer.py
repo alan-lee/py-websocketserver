@@ -189,7 +189,7 @@ class WebSocketServer(object):
             headers['Version'] = version
             client.headers.update(headers)
             client.handshake = True
-        except Exception,e:
+        except Exception, e:
             print str(e)
             etype, value, tb = sys.exc_info()
             print traceback.format_exception(etype, value, tb)
@@ -215,9 +215,9 @@ class WebSocketServer(object):
                 f.payload.extend(client.frags[i].payload)
         
         if f.opcode == 0x1 or f.opcode == 0x02:
-            msg = f.get_msg();
+            msg = f.get_msg()
             ret = self._dispatcher.dispatch(msg, client)
-            if ret <> None:
+            if ret is not None:
                 self._send_frame(client, 0x1, ret)
         elif f.opcode == 0x8:
             self._close_client(client)
@@ -243,7 +243,7 @@ class WebSocketServer(object):
     
     def _process_pong(self, frame, client):
         if frame.length > 0:
-            msg = frame.get_msg();
+            msg = frame.get_msg()
             self._dispatcher.dispatch(msg, client)
         
     def _send_frame(self, client, opcode, data, mask = None, frags = False, frag_size = 0):
@@ -270,7 +270,7 @@ class WebSocketServer(object):
         fheader = ''
         length = len(data)
         first_byte = (fin << 7) + opcode
-        second_byte = 0;
+        second_byte = 0
         if mask:
             second_byte = 0x1 << 7
            
